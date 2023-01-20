@@ -1,2 +1,2 @@
 # awesome-ML
-.ignore R
+
