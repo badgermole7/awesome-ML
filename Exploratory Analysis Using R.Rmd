@@ -1,0 +1,84 @@
+```{r Setup, message=FALSE, warning=FALSE}
+# Load standard libraries
+library(tidyverse)
+library('nycflights13')
+```
+
+```{r}
+
+
+#Loading the nycflights13 data into a tibble called flights_df
+flights_df <- tbl_df(flights)
+
+glimpse(flights_df)
+
+#Exploratory Analysis
+
+#1 Check dimensions
+dim(flights_df) #336776 observations for 19 variables
+
+#2 Check Head - first few rows
+head(flights_df) #Nothing strange about results
+
+#3 Check Tail - last few obseravtions
+tail(flights_df) #NA's in some time columns - Do they suggest flight cancellation?
+
+#4 Summary statistics of data
+#Checking min, max and range of dep, arrival time variables
+summary(flights_df) # NA's found in several columns like dep_time & sched_dep_time 
+
+#5 Checking variable datatypes of flights_df
+str(flights_df)
+
+#6 How many distinct carriers, flights, origin, destinations in the dataset? 
+unique(flights_df$carrier)          #16 carriers
+length(unique(flights_df$flight))   #3844  distinct flights that flew out of NYC in 2013
+unique(flights_df$origin)           #3 Origin - EWR, LGA, JFK
+length(unique(flights_df$dest))     #105 distinct entries in destination column
+
+#7 How many missing values in each variable?
+sapply(flights_df, function(fun) { sum(is.na(fun))}) #Total number of NA's in all columns
+
+#8 How many flights went out early or otherwise in each airport?
+
+#Total on-time flights
+flights_df %>%          #16514
+   filter(dep_delay == 0)    
+
+#Total cancelled Flights   
+flights_df %>%         #8255
+   filter(is.na(dep_delay))    
+
+#Total early Flights  #183575
+flights_df %>%
+   filter(dep_delay < 0)
+
+#Total late Flights   #128432
+flights_df %>%
+   filter(dep_delay > 0)
+
+#Number of on-time flights by airport
+flights_df %>%
+   filter(dep_delay == 0) %>%
+   group_by(origin) %>%
+   summarise(on_time_flights = n())
+
+#Number of cancelled flights  by airport
+flights_df %>%
+   filter(is.na(dep_delay)) %>%
+   group_by(origin) %>%
+   summarise(on_time_flights = n())
+
+#Number of early flights  by airport
+flights_df %>%
+   filter(dep_delay < 0) %>%
+   group_by(origin) %>%
+   summarise(early_flights = n())
+
+#Number of late flights  by airport
+flights_df %>%
+   filter(dep_delay > 0) %>%
+   group_by(origin) %>%
+   summarise(late_flights = n())
+
+```
