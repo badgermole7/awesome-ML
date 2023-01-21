@@ -6,10 +6,10 @@ library('nycflights13')
 
 ```{r}
 
-
 #Loading the nycflights13 data into a tibble called flights_df
 flights_df <- tbl_df(flights)
 
+#Checking dataset
 glimpse(flights_df)
 
 #Exploratory Analysis
