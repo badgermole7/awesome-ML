@@ -13,7 +13,6 @@ flights_df <- tbl_df(flights)
 glimpse(flights_df)
 
 #Exploratory Analysis
-
 #1 Check dimensions
 dim(flights_df) #336776 observations for 19 variables
 
